@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BM11 Dryer Canvas Tension Measurement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f0f4f8;
+            background: #000 url('{{ url_for('static', filename='images/bm11.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-layout {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            gap: 40px;
+        }
+
+        .left-panel {
+            flex: 1.5;
+            text-align: left;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: #ffcc70;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: #ccc;
+        }
+
+        .center-panel {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .center-panel img {
+            width: 175%;
+            max-width: 400px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .right-panel {
+            flex: 1;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            width: 100%;
+        }
+
+        .section-banner {
+            font-size: 1.1em;
+            color: #ffc371;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .form-group input,
+        select {
+            flex: 1 0 28%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background-color: #1e2a38;
+            color: white;
+            font-size: 1em;
+        }
+
+        button {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #e65c00;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: left;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .top-links {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            z-index: 1000;
+            font-family: 'League Spartan', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .top-links a {
+            font-size: 1em;
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s, transform 0.3s ease;
+            padding: 5px 10px;
+        }
+
+        .top-links a:hover {
+            color: #ffcc70;
+            transform: scale(1.15);
+        }
+
+        .top-links .divider {
+            color: white;
+            font-size: 1.2em;
+        }
+
+
+        .main-result-layout {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            gap: 40px;
+            animation: fadeIn 1s ease-in;
+            flex-wrap: wrap;
+        }
+
+        .image-panel {
+            flex: 1;
+            text-align: center;
+            animation: slideInLeft 1s ease forwards;
+        }
+
+        .image-panel img {
+            width: 500px;
+            max-width: 100%;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .result-panel {
+            flex: 1.2;
+            background-color: rgba(248, 250, 254, 0.95);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            animation: slideInRight 1s ease forwards;
+        }
+
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="top-links">
+        <a href="#" onclick="document.querySelector('form').submit();">Calculate</a>
+        <span class="divider">|</span>
+        <a href="{{ url_for('history') }}">History</a>
+    </div>    
+
+    <div class="main-layout">
+        <div class="left-panel">
+            <header>
+                <h1>Boarding Machine-11</h1>
+                <h1>Canvas tension optimizer</h1>
+                <p>Enter your measurement value,<br>Find your optimum canvas tension.</p>
+            </header>
+        </div>
+
+        <div class="center-panel">
+            <img src="{{ url_for('static', filename='images/regulator.png') }}" alt="Regulator">
+        </div>
+
+        <div class="right-panel">
+            <div class="container">
+                <form action="/calculate" method="post">
+                    <div class="section">
+                        <div class="section-banner">Select Dryer Group</div>
+                        <div class="form-group">
+                            <select name="category" required style="width: 100%; padding: 10px; font-size: 1.1em;">
+                                <option value="" disabled selected>Select a dryer group</option>
+                                <option>Dryer group 1</option>
+                                <option>Dryer group 2 TOP</option>
+                                <option>Dryer group 2 BOTTOM</option>
+                                <option>Dryer group 3 TOP</option>
+                                <option>Dryer group 3 BOTTOM</option>
+                                <option>Dryer group 4 TOP</option>
+                                <option>Dryer group 4 Bottom</option>
+                                <option>Dryer group 6 TOP</option>
+                                <option>Dryer group 6 BOTTOM</option>
+                                <option>Dryer group 7 TOP</option>
+                                <option>Dryer group 7 BOTTOM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="xy-group-wrapper">
+                        <!-- X Inputs -->
+                        <div class="xy-group">
+                            <div class="section-banner">Bellow Pressure Setpoint (kPa)</div>
+                            <div class="form-group">
+                                <input type="text" name="x1" placeholder="Setpoint 1" required>
+                                <input type="text" name="x2" placeholder="Setpoint 2" required>
+                                <input type="text" name="x3" placeholder="Setpoint 3" required>
+                                <input type="text" name="x4" placeholder="Setpoint 4" required>
+                                <input type="text" name="x5" placeholder="Setpoint 5" required>
+                                <input type="text" name="x6" placeholder="Setpoint 6" required>
+                                <input type="text" name="x7" placeholder="Setpoint 7" required>
+                            </div>
+                        </div>
+                    
+                        <!-- Y Inputs -->
+                        <div class="xy-group">
+                            <div class="section-banner">Actual Canvas Tension (kN/m)</div>
+                            <div class="form-group">
+                                <input type="text" name="y1" placeholder="Tension 1" required>
+                                <input type="text" name="y2" placeholder="Tension 2" required>
+                                <input type="text" name="y3" placeholder="Tension 3" required>
+                                <input type="text" name="y4" placeholder="Tension 4" required>
+                                <input type="text" name="y5" placeholder="Tension 5" required>
+                                <input type="text" name="y6" placeholder="Tension 6" required>
+                                <input type="text" name="y7" placeholder="Tension 7" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+    <footer>
+        <p>&copy; Dev in Y2025 by BM11-Thai cane paper</p>
+    </footer>
+</body>
+</html>
